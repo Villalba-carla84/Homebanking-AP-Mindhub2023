@@ -21,6 +21,8 @@ public class HomebankingApplication {
 
 			Client client1 = clientRepository.save(new Client("Melba","Morel","melba@mindhub.com"));
 			Client client2 = clientRepository.save(new Client("Felipe","Ulloa","felipe000@mindhub.com"));
+			Client client3 = clientRepository.save(new Client("Martina","blas","martu@mindhub.com"));
+			Client client4 = clientRepository.save(new Client("Susana","Festa","sufesta@mindhub.com"));
 		});
 	}
 }
