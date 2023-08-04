@@ -20,6 +20,7 @@ public class HomebankingApplication {
 		return (args -> {
 
 			Client client1 = clientRepository.save(new Client("Melba","Morel","melba@mindhub.com"));
+			Client client2 = clientRepository.save(new Client("Felipe","Ulloa","felipe000@mindhub.com"));
 		});
 	}
 }
