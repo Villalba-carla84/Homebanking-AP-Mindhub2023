@@ -19,10 +19,16 @@ public class HomebankingApplication {
 
 		return (args -> {
 
-			Client client1 = clientRepository.save(new Client("Melba","Morel","melba@mindhub.com"));
-			Client client2 = clientRepository.save(new Client("Felipe","Ulloa","felipe000@mindhub.com"));
-			Client client3 = clientRepository.save(new Client("Martina","blas","martu@mindhub.com"));
-			Client client4 = clientRepository.save(new Client("Susana","Festa","sufesta@mindhub.com"));
+			Client client1 = new Client("Melba","Morel","melba@mindhub.com");
+			Client client2 = new Client("Felipe","Ulloa","felipe000@mindhub.com");
+			Client client3 = new Client("Martina","blas","martu@mindhub.com");
+			Client client4 = new Client("Susana","Festa","sufesta@mindhub.com");
+
+			clientRepository.save(client1);
+			clientRepository.save(client2);
+			clientRepository.save(client3);
+			clientRepository.save(client4);
+
 		});
 	}
 }
