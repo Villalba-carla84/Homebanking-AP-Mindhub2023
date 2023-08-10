@@ -20,7 +20,7 @@ public class ClientController {
     private ClientRepository clientRepository;
 
 
-    @JsonIgnore
+
     @RequestMapping("/clients")
     public List<ClientDTO> getClients() {
 
