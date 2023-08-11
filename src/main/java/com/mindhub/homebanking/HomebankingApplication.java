@@ -2,8 +2,11 @@ package com.mindhub.homebanking;
 
 import com.mindhub.homebanking.models.Account;
 import com.mindhub.homebanking.models.Client;
+import com.mindhub.homebanking.models.Transaction;
+import com.mindhub.homebanking.models.TransactionType;
 import com.mindhub.homebanking.repositories.AccountRepository;
 import com.mindhub.homebanking.repositories.ClientRepository;
+import com.mindhub.homebanking.repositories.TransactionRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,6 +14,7 @@ import org.springframework.context.annotation.Bean;
 
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Period;
 
 @SpringBootApplication
@@ -21,7 +25,7 @@ public class HomebankingApplication {
 	}
 
 @Bean
-	public CommandLineRunner initData(ClientRepository clientRepository, AccountRepository accountRepository){
+	public CommandLineRunner initData(ClientRepository clientRepository, AccountRepository accountRepository, TransactionRepository transactionRepository){
 
 		return (args -> {
 
@@ -58,6 +62,26 @@ public class HomebankingApplication {
 			accountRepository.save(account4);
 			accountRepository.save(account5);
 			accountRepository.save(account6);
+
+
+			Transaction transaction1 = new Transaction(TransactionType.CREDIT, 7000.0, "transfer received", LocalDateTime.now() );
+			Transaction transaction2 = new Transaction(TransactionType.CREDIT, 15000, "transfer received", LocalDateTime.now() );
+			Transaction transaction3 = new Transaction(TransactionType.DEBIT, -9500, "Buys xx", LocalDateTime.now() );
+			Transaction transaction4 = new Transaction(TransactionType.DEBIT, -2750, "Buys x", LocalDateTime.now());
+			Transaction transaction5 = new Transaction(TransactionType.CREDIT, 7000, "transfer received", LocalDateTime.now());
+
+			account1.addTransaction(transaction1);
+			account2.addTransaction(transaction2);
+			account1.addTransaction(transaction3);
+			account2.addTransaction(transaction4);
+			account1.addTransaction(transaction5);
+
+
+			transactionRepository.save(transaction1);
+			transactionRepository.save(transaction2);
+			transactionRepository.save(transaction3);
+			transactionRepository.save(transaction4);
+			transactionRepository.save(transaction5);
 
 		});
 	}
