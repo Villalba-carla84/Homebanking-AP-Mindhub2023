@@ -21,7 +21,7 @@ public class HomebankingApplication {
 	}
 
 @Bean
-	public CommandLineRunner initData(ClientRepository clientRepository, AccountRepository accountRepository, TransactionRepository transactionRepository, LoanRepository loanRepository, ClientLoanRepository clientLoanRepository){
+	public CommandLineRunner initData(ClientRepository clientRepository, AccountRepository accountRepository, TransactionRepository transactionRepository, LoanRepository loanRepository, ClientLoanRepository clientLoanRepository,CardRepository cardRepository){
 
 		return (args -> {
 
@@ -114,6 +114,49 @@ public class HomebankingApplication {
 
             clientLoanRepository.save(clientLoan3);
 			clientLoanRepository.save(clientLoan4);
+
+
+             Card card1 = new Card();
+			 card1.setCardholder(client1.getFirstName()+ " " +client1.getLastName());
+			 card1.setColor(CardColor.GOLD);
+			 card1.setType(CardType.DEBIT);
+			 card1.setFromDate(LocalDate.now());
+			 card1.setThruDate(LocalDate.now().plusYears(5));
+			 card1.setNumber("3456 8765 9087");
+			 card1.setCvv(453);
+
+			 client1.addCard(card1);
+			 cardRepository.save(card1);
+
+
+		    Card card2 = new Card();
+			card2.setCardholder(client1.getFirstName()+ " " +client1.getLastName());
+			card2.setColor(CardColor.TITANIUM);
+			card2.setType(CardType.CREDIT);
+			card2.setFromDate(LocalDate.now());
+			card2.setThruDate(LocalDate.now().plusYears(5));
+			card2.setNumber("5888 3334 9611 0003");
+			card2.setCvv(102);
+
+			client1.addCard(card2);
+			cardRepository.save(card2);
+
+
+			Card card3 = new Card();
+			card3.setCardholder(client2.getFirstName()+ " " +client2.getLastName());
+			card3.setColor(CardColor.TITANIUM);
+			card3.setType(CardType.CREDIT);
+			card3.setFromDate(LocalDate.now());
+			card3.setThruDate(LocalDate.now().plusYears(4));
+			card3.setNumber("4711 5200 6547");
+			card3.setCvv(987);
+
+			client2.addCard(card3);
+			cardRepository.save(card3);
+
+
+
+
 
 
 

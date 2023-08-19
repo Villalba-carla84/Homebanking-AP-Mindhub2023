@@ -79,6 +79,7 @@ public class Loan {
 
     public void addClientLoans(ClientLoan clientLoan){
         clientLoan.setLoan(this);
+
         clientLoans.add(clientLoan);
 
     }
