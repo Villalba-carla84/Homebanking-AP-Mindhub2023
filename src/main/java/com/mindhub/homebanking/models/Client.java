@@ -3,8 +3,9 @@ package com.mindhub.homebanking.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
+
 import javax.persistence.*;
-import java.util.Arrays;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -38,6 +39,8 @@ private Set<Card> cardsClient =new HashSet<>();
         this.email= email;
         this.password = password;
     }
+
+
 
     public Set<Account> getAccounts() {
 
@@ -87,10 +90,12 @@ private Set<Card> cardsClient =new HashSet<>();
     }
 
     public String getPassword() {
+
         return password;
     }
 
     public void setPassword(String password) {
+
         this.password = password;
     }
 
@@ -118,6 +123,7 @@ private Set<Card> cardsClient =new HashSet<>();
         card.setCards(this);
         cardsClient.add(card);
     }
+
 
     @JsonIgnore
     public List<Loan> getLoans(){
