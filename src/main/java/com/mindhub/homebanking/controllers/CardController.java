@@ -48,10 +48,10 @@ public class CardController {
                         .filter(card -> card.getType() == cardType)// para filtrar solo las tarjetas que coinciden con el tipo de tarjeta especificado
                         .count(); //para contar cuántas tarjetas del mismo tipo ya tiene
 
-              /*  List<Card> cardsFiltered = client.getCardsClient().stream().filter(card -> card.getType() == cardType).collect(Collectors.toList());
+               List<Card> cardsFiltered = client.getCardsClient().stream().filter(card -> card.getType() == cardType).collect(Collectors.toList());
                 if (existingCardsCount >= 3) {
                    return new ResponseEntity<>("Already have 3 cards of this type", HttpStatus.FORBIDDEN);
-                }*/
+                }
                 // Verificar si el cliente ya tiene una tarjeta del mismo color
               boolean hasCardWithSameColor = client.getCardsClient().stream()
                         .anyMatch(card -> card.getColor() == cardColor);

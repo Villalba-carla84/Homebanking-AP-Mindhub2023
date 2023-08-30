@@ -85,10 +85,6 @@ public class AccountController {
 
     }
 
-    /*private String generateAccountNumber() {
-        Random random = new Random();
-        int accountSuffix = random.nextInt(99999999); // Máximo 8 dígitos
-        return ACCOUNT_PREFIX + "-" + accountSuffix;
-    }*/
+
 
 }
