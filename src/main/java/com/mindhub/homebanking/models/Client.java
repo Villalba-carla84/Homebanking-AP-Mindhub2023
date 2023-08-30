@@ -34,12 +34,12 @@ private Set<ClientLoan> clientLoans = new HashSet<>();
 private Set<Card> cardsClient =new HashSet<>();
 
     public Client(){}
-    public Client( String firstName, String lastName, String email,String password, RolUser rol){
+    public Client( String firstName, String lastName, String email,String password){
         this.firstName = firstName;
         this.lastName = lastName;
         this.email= email;
         this.password = password;
-        this.rol= rol;
+
     }
 
 

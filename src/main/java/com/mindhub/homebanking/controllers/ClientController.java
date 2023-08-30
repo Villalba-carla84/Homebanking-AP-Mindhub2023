@@ -1,6 +1,7 @@
 package com.mindhub.homebanking.controllers;
 import com.mindhub.homebanking.dtos.ClientDTO;
 import com.mindhub.homebanking.models.Account;
+import com.mindhub.homebanking.models.AccountUtil;
 import com.mindhub.homebanking.models.Client;
 import com.mindhub.homebanking.models.RolUser;
 import com.mindhub.homebanking.repositories.AccountRepository;
@@ -36,6 +37,9 @@ public class ClientController {
     @Autowired
     private AccountRepository accountRepository;
 
+    @Autowired
+    private AccountUtil accountUtil;
+
     @RequestMapping(value = "/clients/current", method = RequestMethod.GET)
     public ClientDTO getClientCurrent(Authentication authentication){
         return new ClientDTO(clientRepository.findByEmail(authentication.getName()));
@@ -60,7 +64,7 @@ public class ClientController {
 
             @RequestParam String firstName, @RequestParam String lastName,
 
-            @RequestParam String email, @RequestParam String password, @RequestParam RolUser rol) {
+            @RequestParam String email, @RequestParam String password) {
 
         if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty()) {
             return new ResponseEntity<>("Missing data", HttpStatus.FORBIDDEN);
@@ -69,8 +73,17 @@ public class ClientController {
         if (clientRepository.findByEmail(email) !=  null) {
             return new ResponseEntity<>("Name already in use", HttpStatus.FORBIDDEN);
         }
+        Client newClient = new Client(firstName, lastName, email, passwordEncoder.encode(password));
 
-        clientRepository.save(new Client(firstName, lastName, email, passwordEncoder.encode(password),rol));
+// Crear una cuenta y asociarla al cliente
+        String accountNumber = accountUtil.generateAccountNumber();
+        Account account = new Account(accountNumber, LocalDate.now(), 0);
+        newClient.addAccount(account);
+        account.setClient(newClient);
+
+        // Guardar el cliente y la cuenta en el repositorio
+        clientRepository.save(newClient);
+        accountRepository.save(account);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
 

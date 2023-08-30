@@ -3,6 +3,7 @@ package com.mindhub.homebanking.controllers;
 import com.mindhub.homebanking.dtos.AccountDTO;
 import com.mindhub.homebanking.dtos.ClientDTO;
 import com.mindhub.homebanking.models.Account;
+import com.mindhub.homebanking.models.AccountUtil;
 import com.mindhub.homebanking.models.Client;
 import com.mindhub.homebanking.repositories.AccountRepository;
 import com.mindhub.homebanking.repositories.ClientRepository;
@@ -30,6 +31,9 @@ public class AccountController {
 
     @Autowired
     private ClientRepository clientRepository;
+
+    @Autowired
+    private AccountUtil accountUtil;
 
     @RequestMapping("/accounts")
     public List<AccountDTO> getAccounts () {
@@ -63,7 +67,7 @@ public class AccountController {
             return new ResponseEntity<>("Maximum account limit reached", HttpStatus.FORBIDDEN);
         }
         // Generar un número de cuenta aleatorio
-        String accountNumber = generateAccountNumber();
+        String accountNumber = accountUtil.generateAccountNumber();
         // Crear la cuenta
         Account account = new Account(accountNumber, LocalDate.now() , 0);
 
@@ -81,10 +85,10 @@ public class AccountController {
 
     }
 
-    private String generateAccountNumber() {
+    /*private String generateAccountNumber() {
         Random random = new Random();
         int accountSuffix = random.nextInt(99999999); // Máximo 8 dígitos
         return ACCOUNT_PREFIX + "-" + accountSuffix;
-    }
+    }*/
 
 }

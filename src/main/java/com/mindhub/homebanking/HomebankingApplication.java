@@ -32,11 +32,11 @@ public class HomebankingApplication {
 		return args -> {
 
 
-			Client client1 = new Client("Melba","Morel","melba@mindhub.com", passwordEncoder.encode("1234"),RolUser.CLIENT);
-			Client client2 = new Client("Felipe","Ulloa","felipe000@mindhub.com", passwordEncoder.encode("1111"),RolUser.CLIENT);
-			Client client3 = new Client("Martina","blas","martu@mindhub.com", passwordEncoder.encode("9999"),RolUser.CLIENT);
-			Client client4 = new Client("Susana","Festa","sufesta@mindhub.com", passwordEncoder.encode("6789"),RolUser.CLIENT);
-			Client admin1 =  new Client("admin", "admin", "admin@mindhub.com",passwordEncoder.encode("1234"), RolUser.ADMIN);
+			Client client1 = new Client("Melba","Morel","melba@mindhub.com", passwordEncoder.encode("1234"));
+			Client client2 = new Client("Felipe","Ulloa","felipe000@mindhub.com", passwordEncoder.encode("1111"));
+			Client client3 = new Client("Martina","blas","martu@mindhub.com", passwordEncoder.encode("9999"));
+			Client client4 = new Client("Susana","Festa","sufesta@mindhub.com", passwordEncoder.encode("6789"));
+			Client admin1 =  new Client("admin", "admin", "admin@mindhub.com",passwordEncoder.encode("1234"));
 
 			clientRepository.save(client1);
 		    clientRepository.save(client2);
