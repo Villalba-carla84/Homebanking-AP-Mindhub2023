@@ -19,6 +19,13 @@ public class WebAuthentication extends GlobalAuthenticationConfigurerAdapter {
     @Autowired //inyecc de dependencia a ClientRepository
     ClientRepository clientRepository;
 
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+
+    }
+
+
     @Override
     public void init(AuthenticationManagerBuilder auth) throws Exception {
 
@@ -41,10 +48,5 @@ public class WebAuthentication extends GlobalAuthenticationConfigurerAdapter {
 
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-
-    }
 
 }
