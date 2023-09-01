@@ -1,5 +1,4 @@
 Vue.createApp({
-
     data() {
         return {
             errorToats: null,
@@ -32,7 +31,6 @@ Vue.createApp({
                     }
                 }
                 axios.post(`/api/clients/current/cards?cardType=${this.cardType}&cardColor=${this.cardColor}`, config)
-                //axios.post('/api/clients/current/cards', cardType=${this.cardType}&cardColor=${this.cardColor}, config)
                     .then(response => window.location.href = "/web/cards.html")
                     .catch((error) => {
                         this.errorMsg = error.response.data;

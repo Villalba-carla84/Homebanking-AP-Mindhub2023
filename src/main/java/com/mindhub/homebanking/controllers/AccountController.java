@@ -51,8 +51,12 @@ public class AccountController {
     }
 
 
+    @RequestMapping("/clients/current/accounts")
+    public List<AccountDTO> getCurrentAccounts(Authentication authentication){
+        return clientRepository.findByEmail(authentication.getName()).getAccounts().stream().map(AccountDTO::new).collect(toList());
+    }
 
-    private static final String ACCOUNT_PREFIX = "VIN";
+
     @RequestMapping(path = "/clients/current/accounts", method = RequestMethod.POST)
 
     public ResponseEntity<Object> createAccount( Authentication authentication) {

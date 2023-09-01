@@ -59,7 +59,7 @@ public class ClientController {
 
             @RequestParam String firstName, @RequestParam String lastName,
 
-            @RequestParam String email, @RequestParam String password) {
+            @RequestParam String email, @RequestParam String password, @RequestParam boolean isAdmin) {
 
         if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty()) {
             return new ResponseEntity<>("Missing data", HttpStatus.FORBIDDEN);
@@ -68,7 +68,7 @@ public class ClientController {
         if (clientRepository.findByEmail(email) !=  null) {
             return new ResponseEntity<>("Name already in use", HttpStatus.FORBIDDEN);
         }
-        Client newClient = new Client(firstName, lastName, email, passwordEncoder.encode(password));
+        Client newClient = new Client(firstName, lastName, email, passwordEncoder.encode(password),isAdmin);
 
 // Crear una cuenta y asociarla al cliente
         String accountNumber = accountUtil.generateAccountNumber();

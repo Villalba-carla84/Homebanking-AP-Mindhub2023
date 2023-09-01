@@ -22,7 +22,8 @@ public class Client {
     private String lastName;
     private String email;
     private String password;
-    private RolUser rol;
+    private boolean isAdmin;
+
 
 @OneToMany(mappedBy = "client",fetch = FetchType.EAGER)
 private Set<Account> accounts = new HashSet<>();
@@ -34,11 +35,12 @@ private Set<ClientLoan> clientLoans = new HashSet<>();
 private Set<Card> cardsClient =new HashSet<>();
 
     public Client(){}
-    public Client( String firstName, String lastName, String email,String password){
+    public Client( String firstName, String lastName, String email,String password,boolean isAdmin){
         this.firstName = firstName;
         this.lastName = lastName;
         this.email= email;
         this.password = password;
+        this.isAdmin = isAdmin;
 
     }
 
@@ -111,12 +113,13 @@ private Set<Card> cardsClient =new HashSet<>();
         return clientLoans;
     }
 
-    public RolUser getRol() {
-        return rol;
+
+    public boolean isAdmin() {
+        return isAdmin;
     }
 
-    public void setRol(RolUser rol) {
-        this.rol = rol;
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
     }
 
     public void addClientLoans(ClientLoan clientLoan){

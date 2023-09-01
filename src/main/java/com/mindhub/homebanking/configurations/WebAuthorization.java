@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
@@ -17,16 +18,15 @@ import javax.servlet.http.HttpSession;
 
 @Configuration
 public class WebAuthorization {
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
+
+@Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers(HttpMethod.POST,"/api/login","/api/logout").permitAll()
-                .antMatchers( "/web/index.html").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/clients").permitAll()
+                .antMatchers( "/web/**").permitAll()
+                .antMatchers(HttpMethod.POST,"/api/login","/api/logout","/api/clients").permitAll()
                 .antMatchers("/admin/**").hasAuthority("ADMIN")
-                .antMatchers("/api/**", "/api/clients/current").hasAuthority("CLIENT")
-                .antMatchers("/clients/current/accounts").permitAll()
-                .antMatchers("/clients/current/cards").authenticated();
+                .antMatchers( "/api/clients/current").authenticated()
+                .antMatchers(HttpMethod.POST ,"/clients/current/cards","/api/clients/current/transactions").authenticated();
 
 
 
@@ -61,7 +61,7 @@ public class WebAuthorization {
 
         http.logout().logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler());
 
-        return http.build();
+     return http.build();
     }
 
     private void clearAuthenticationAttributes(HttpServletRequest req) {
