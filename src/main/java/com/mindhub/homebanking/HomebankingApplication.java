@@ -69,17 +69,12 @@ public class HomebankingApplication {
 			accountRepository.save(account6);
 
 
-			Transaction transaction1 = new Transaction(TransactionType.CREDIT, 7000.0, "transfer received", LocalDateTime.now() );
-			Transaction transaction2 = new Transaction(TransactionType.CREDIT, 15000, "transfer received", LocalDateTime.now() );
-			Transaction transaction3 = new Transaction(TransactionType.DEBIT, -9500, "Buys xx", LocalDateTime.now() );
-			Transaction transaction4 = new Transaction(TransactionType.DEBIT, -2750, "Buys x", LocalDateTime.now());
-			Transaction transaction5 = new Transaction(TransactionType.CREDIT, 7000, "transfer received", LocalDateTime.now());
+			Transaction transaction1 = new Transaction(TransactionType.CREDIT, 7000.0, "transfer received", LocalDateTime.now(),account1 );
+			Transaction transaction2 = new Transaction(TransactionType.CREDIT, 15000, "transfer received", LocalDateTime.now(),account2 );
+			Transaction transaction3 = new Transaction(TransactionType.DEBIT, -9500, "Buys xx", LocalDateTime.now(),account1 );
+			Transaction transaction4 = new Transaction(TransactionType.DEBIT, -2750, "Buys x", LocalDateTime.now(),account2);
+			Transaction transaction5 = new Transaction(TransactionType.CREDIT, 7000, "transfer received", LocalDateTime.now(),account1);
 
-			account1.addTransaction(transaction1);
-			account2.addTransaction(transaction2);
-			account1.addTransaction(transaction3);
-			account2.addTransaction(transaction4);
-			account1.addTransaction(transaction5);
 
 
 			transactionRepository.save(transaction1);
@@ -97,29 +92,17 @@ public class HomebankingApplication {
 			loanRepository.save(loan2);
 			loanRepository.save(loan3);
 
-			ClientLoan clientLoan1 = new ClientLoan(400000.0, 60);
-			ClientLoan clientLoan2 = new ClientLoan(50000.0, 60);
-
-			clientLoan1.setClient(client1);
-            clientLoan1.setLoan(loan1);
-
-			clientLoan2.setClient(client1);
-			clientLoan2.setLoan(loan2);
+			ClientLoan clientLoan1 = new ClientLoan(400000.0, 60, client1,loan1);
+			ClientLoan clientLoan2 = new ClientLoan(50000.0, 60,client2,loan2);
 
 
 			clientLoanRepository.save(clientLoan1);
 			clientLoanRepository.save(clientLoan2);
 
 
-			ClientLoan clientLoan3 = new ClientLoan(100000.0, 24);
-			ClientLoan clientLoan4 = new ClientLoan(200000.0, 36);
+			ClientLoan clientLoan3 = new ClientLoan(100000.0, 24,client2,loan2);
+			ClientLoan clientLoan4 = new ClientLoan(200000.0, 36,client2,loan3);
 
-
-			clientLoan3.setClient(client2);
-			clientLoan3.setLoan(loan2);
-
-			clientLoan4.setClient(client2);
-			clientLoan4.setLoan(loan3);
 
             clientLoanRepository.save(clientLoan3);
 			clientLoanRepository.save(clientLoan4);

@@ -74,13 +74,10 @@ public class TransactionController {
         }
 
 
-        Transaction debitTransaction = new Transaction(TransactionType.DEBIT, -amount,description + " DEBIT - " + fromAccountNumber, LocalDateTime.now());
-        Transaction creditTransaction = new Transaction(TransactionType.CREDIT,amount,description + " CREDIT - " + toAccountNumber, LocalDateTime.now());
+        Transaction debitTransaction = new Transaction(TransactionType.DEBIT, -amount,description + " DEBIT - " + fromAccountNumber, LocalDateTime.now(),sourseAccount);
+        Transaction creditTransaction = new Transaction(TransactionType.CREDIT,amount,description + " CREDIT - " + toAccountNumber, LocalDateTime.now(),targetAccount);
         //crea transacciones
 
-
-        sourseAccount.addTransaction(debitTransaction);
-        targetAccount.addTransaction(creditTransaction);//asocia transacciones a las cuentas
 
 
         sourseAccount.setBalance(sourseAccount.getBalance() - amount);
