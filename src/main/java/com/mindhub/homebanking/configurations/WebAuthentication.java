@@ -40,13 +40,12 @@ public class WebAuthentication extends GlobalAuthenticationConfigurerAdapter {
 
             if (client != null) {
 
-                List<GrantedAuthority> authorities = new ArrayList<>();
-                authorities.add(new SimpleGrantedAuthority("CLIENT"));
-
-                if (client.isAdmin()) { // Agregar el rol de ADMIN si corresponde
-                    authorities.add(new SimpleGrantedAuthority("ADMIN"));
+                if (client.getEmail().toLowerCase().contains("admin@mindhub.com")){
+                    return new User(client.getEmail(), client.getPassword(),
+                            AuthorityUtils.createAuthorityList("ADMIN"));
                 }
-                return new User(client.getEmail(), client.getPassword(), authorities);
+                return new User(client.getEmail(), client.getPassword(),
+                        AuthorityUtils.createAuthorityList("CLIENT"));
             } else {
 
                 throw new UsernameNotFoundException("Unknown User: " + inputName);
