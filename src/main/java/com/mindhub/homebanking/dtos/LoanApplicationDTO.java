@@ -2,12 +2,12 @@ package com.mindhub.homebanking.dtos;
 
 public class LoanApplicationDTO {
 
-    private String loanId;
+    private Long loanId;
     private double amount;
     private Integer payments;
-    private String  destinationAccountNumber;
+    private String  toAccountNumber;
 
-    public String getLoanId() {
+    public Long getLoanId() {
         return loanId;
     }
 
@@ -19,7 +19,7 @@ public class LoanApplicationDTO {
         return payments;
     }
 
-    public String getDestinationAccountNumber() {
-        return destinationAccountNumber;
+    public String getToAccountNumber() {
+        return toAccountNumber;
     }
 }
