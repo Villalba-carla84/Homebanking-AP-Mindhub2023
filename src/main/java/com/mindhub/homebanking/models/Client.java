@@ -22,7 +22,7 @@ public class Client {
     private String lastName;
     private String email;
     private String password;
-    private RolUser rol;
+
 
 @OneToMany(mappedBy = "client",fetch = FetchType.EAGER)
 private Set<Account> accounts = new HashSet<>();
@@ -111,13 +111,6 @@ private Set<Card> cardsClient =new HashSet<>();
         return clientLoans;
     }
 
-    public RolUser getRol() {
-        return rol;
-    }
-
-    public void setRol(RolUser rol) {
-        this.rol = rol;
-    }
 
     public void addClientLoans(ClientLoan clientLoan){
         clientLoan.setClient(this);
