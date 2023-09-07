@@ -53,8 +53,7 @@ public List<LoanDTO> getLoanApplicationDTO() {
         }
 
         //Verificar que el préstamo exista
-      Loan loan = loanRepository.findByName(loanApplicationDTO.getLoanId());
-
+      Loan loan = loanRepository.getLoanById(loanApplicationDTO.getLoanId());
         if (loan == null) {
             return new ResponseEntity<>("the Loan not exist", HttpStatus.FORBIDDEN);
         }
