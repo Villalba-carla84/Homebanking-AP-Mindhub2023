@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -52,7 +53,8 @@ public List<LoanDTO> getLoanApplicationDTO() {
         }
 
         //Verificar que el préstamo exista
-        Loan loan = loanRepository.getLoanById(loanApplicationDTO.getLoanId());
+      Loan loan = loanRepository.findByName(loanApplicationDTO.getLoanId());
+
         if (loan == null) {
             return new ResponseEntity<>("the Loan not exist", HttpStatus.FORBIDDEN);
         }
