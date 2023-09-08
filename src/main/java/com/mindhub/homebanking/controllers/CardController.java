@@ -9,6 +9,8 @@ import com.mindhub.homebanking.repositories.CardRepository;
 import com.mindhub.homebanking.repositories.ClientRepository;
 import com.mindhub.homebanking.repositories.TransactionRepository;
 
+import com.mindhub.homebanking.services.CardService;
+import com.mindhub.homebanking.services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,13 +28,12 @@ import java.util.stream.Collectors;
 @RequestMapping("/api")
 public class CardController {
     @Autowired
-    private CardRepository cardRepository;
+    private CardService cardService;
     @Autowired
-    private ClientRepository clientRepository;
-    @Autowired
-    private TransactionRepository transactionRepository;
-    @Autowired
-    private AccountRepository accountRepository;
+    private ClientService clientService;
+
+
+
 
     @RequestMapping(path="/clients/current/cards", method = RequestMethod.POST)
     public ResponseEntity<Object> createCards(@RequestParam CardColor cardColor,
@@ -40,7 +41,7 @@ public class CardController {
                                               Authentication authentication)
         {
             String userEmail = authentication.getName();
-            Client client = clientRepository.findByEmail(userEmail);
+            Client client = clientService.getClientByEmail(userEmail);
 
             if (client != null) {
                 // Obtener tarjetas del cliente del tipo y contar cuántas ya tiene
@@ -70,8 +71,8 @@ public class CardController {
                     card.setThruDate(LocalDate.now().plusYears(5));
 
                     client.addCard(card);
-                    cardRepository.save(card);
-                    clientRepository.save(client);
+                    cardService.saveCards(card);
+                    clientService.saveClient(client);
 
                     return new ResponseEntity<>("Card created", HttpStatus.CREATED);
                 }

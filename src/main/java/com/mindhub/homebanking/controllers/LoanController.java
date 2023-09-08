@@ -4,6 +4,10 @@ import com.mindhub.homebanking.dtos.LoanApplicationDTO;
 import com.mindhub.homebanking.dtos.LoanDTO;
 import com.mindhub.homebanking.models.*;
 import com.mindhub.homebanking.repositories.*;
+import com.mindhub.homebanking.services.AccountService;
+import com.mindhub.homebanking.services.ClientService;
+import com.mindhub.homebanking.services.LoanService;
+import com.mindhub.homebanking.services.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,22 +25,21 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api")
 public class LoanController {
+    @Autowired
+    private ClientService clientService;
 
     @Autowired
-    ClientRepository clientRepository;
-    @Autowired
-    private LoanRepository loanRepository;
-    @Autowired
-    private AccountRepository accountRepository;
+    private AccountService accountService;
 
     @Autowired
-    ClientLoanRepository clientLoanRepository;
+    private LoanService loanService;
 
     @Autowired
-    TransactionRepository transactionRepository;
+    private TransactionService transactionService;
+
 @RequestMapping(path= "/loans",method = RequestMethod.GET)
 public List<LoanDTO> getLoanApplicationDTO() {
-    return loanRepository.findAll().stream().map(LoanDTO::new).collect(Collectors.toList());
+    return loanService.getListLoanDTO();
                           //servicio GET de “/api/loans” debes crear un LoanDTO que puedas usar para retornar los préstamos disponibles
 }
 
@@ -52,7 +55,7 @@ public List<LoanDTO> getLoanApplicationDTO() {
         }
 
         //Verificar que el préstamo exista
-        Loan loan = loanRepository.getLoanById(loanApplicationDTO.getLoanId());
+        Loan loan = loanService.getLoan(loanApplicationDTO.getLoanId());
         if (loan == null) {
             return new ResponseEntity<>("the Loan not exist", HttpStatus.FORBIDDEN);
         }
@@ -68,12 +71,12 @@ public List<LoanDTO> getLoanApplicationDTO() {
         }
 
         //Verificar que la cuenta de destino exista
-        Account account = accountRepository.findByNumber(loanApplicationDTO.getToAccountNumber());
+        Account account = accountService.findAccount(loanApplicationDTO.getToAccountNumber());
         if (account == null) {
             return new ResponseEntity<>("The account destiny not exist", HttpStatus.FORBIDDEN);
         }
         //verificar que la cuenta de destino pertenezca a un cliente autenticado
-        Client client = clientRepository.findByEmail(authentication.getName());
+        Client client = clientService.getClientByEmail(authentication.getName());
         if (!client.getAccounts().contains(account)){
             return new ResponseEntity<>("Destination account does not belong to the authenticated client", HttpStatus.FORBIDDEN);
         }
@@ -84,11 +87,11 @@ public List<LoanDTO> getLoanApplicationDTO() {
 
         Transaction transaction = new Transaction(TransactionType.CREDIT, loanApplicationDTO.getAmount(), loan.getName() + " loan approved", LocalDateTime.now(), account);
         account.addTransaction(transaction);
-        transactionRepository.save(transaction);
+        transactionService.saveTransaction(transaction);
 
         //actualizo los montos
         account.setBalance(account.getBalance() + loanApplicationDTO.getAmount());
-        accountRepository.save(account);
+        accountService.saveAccount(account);
 
 
        return new ResponseEntity<>(HttpStatus.CREATED);

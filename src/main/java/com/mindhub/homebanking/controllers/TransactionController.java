@@ -8,6 +8,9 @@ import com.mindhub.homebanking.repositories.AccountRepository;
 import com.mindhub.homebanking.repositories.CardRepository;
 import com.mindhub.homebanking.repositories.ClientRepository;
 import com.mindhub.homebanking.repositories.TransactionRepository;
+import com.mindhub.homebanking.services.AccountService;
+import com.mindhub.homebanking.services.ClientService;
+import com.mindhub.homebanking.services.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,17 +25,15 @@ import java.util.Set;
 @RestController
 @RequestMapping("/api")
 public class TransactionController {
-    @Autowired
-    private CardRepository cardRepository;
+
 
     @Autowired
-    private AccountRepository accountRepository;
-
+    private AccountService accountService;
     @Autowired
-    private TransactionRepository transactionRepository;
+    private TransactionService transactionService;
 
-    @Autowired
-    private ClientRepository clientRepository;
+   @Autowired
+   private ClientService clientService;
 
     @Transactional
     @RequestMapping(path="/transactions", method = RequestMethod.POST)
@@ -52,10 +53,10 @@ public class TransactionController {
         }//verifica que los numeros de cuenta no sean iguales
 
         // Obtener cliente autenticado
-        Client client = clientRepository.findByEmail(authentication.getName());
+        Client client = clientService.getClientByEmail(authentication.getName());
 
-        Account sourseAccount = accountRepository.findByNumber(fromAccountNumber);
-        Account targetAccount = accountRepository.findByNumber(toAccountNumber); //busca cuenta de origen y destino
+        Account sourseAccount = accountService.findAccount(fromAccountNumber);
+        Account targetAccount = accountService.findAccount(toAccountNumber); //busca cuenta de origen y destino
 
         if(sourseAccount == null){
             return new ResponseEntity<>("Account/s not found", HttpStatus.FORBIDDEN);
@@ -84,10 +85,10 @@ public class TransactionController {
         targetAccount.setBalance(targetAccount.getBalance() + amount);
         //actualiza saldos de las cuentas
 
-        transactionRepository.save(debitTransaction);
-        transactionRepository.save(creditTransaction);//guarda transacciones a traves del repositorio
-        accountRepository.save(sourseAccount);
-        accountRepository.save(targetAccount);//guarda cuentas a traves del  repositorio
+        transactionService.saveTransaction(debitTransaction);
+        transactionService.saveTransaction(creditTransaction);//guarda transacciones a traves del repositorio
+        accountService.saveAccount(sourseAccount);
+        accountService.saveAccount(targetAccount);//guarda cuentas a traves del  repositorio
 
 
         return new ResponseEntity<>("Transaction created",HttpStatus.CREATED);
