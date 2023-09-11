@@ -1,5 +1,6 @@
 package com.mindhub.homebanking.controllers;
 
+import com.mindhub.homebanking.dtos.CardDTO;
 import com.mindhub.homebanking.models.Card;
 import com.mindhub.homebanking.models.CardColor;
 import com.mindhub.homebanking.models.CardType;
@@ -22,6 +23,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -34,14 +36,18 @@ public class CardController {
 
 
 
+    @GetMapping("/cards")
+    public Set<CardDTO> cards(){
+        return cardService.getCards();
+    }
 
     @RequestMapping(path="/clients/current/cards", method = RequestMethod.POST)
     public ResponseEntity<Object> createCards(@RequestParam CardColor cardColor,
                                               @RequestParam CardType cardType,
                                               Authentication authentication)
         {
-            String userEmail = authentication.getName();
-            Client client = clientService.getClientByEmail(userEmail);
+
+            Client client = clientService.getClientByEmail(authentication.getName());
 
             if (client != null) {
                 // Obtener tarjetas del cliente del tipo y contar cuántas ya tiene
@@ -77,7 +83,7 @@ public class CardController {
                     return new ResponseEntity<>("Card created", HttpStatus.CREATED);
                 }
             } else {
-                throw new UsernameNotFoundException("Unknown user: " + userEmail);
+                throw new UsernameNotFoundException("Unknown user: " + authentication.getName());
             }
         }
 

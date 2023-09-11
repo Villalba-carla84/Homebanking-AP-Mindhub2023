@@ -17,11 +17,11 @@ public class LoanServiceImplement implements LoanService {
     private LoanRepository loanRepository;
 
 
-    @Autowired
+    @Override
     public List<LoanDTO> getListLoanDTO(){
         return loanRepository.findAll().stream().map(LoanDTO::new).collect(Collectors.toList());
     }
-
+    @Override
     public Loan getLoan(long id){
         return loanRepository.getLoanById(id);
     }

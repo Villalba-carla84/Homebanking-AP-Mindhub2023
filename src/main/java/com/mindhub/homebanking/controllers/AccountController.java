@@ -59,9 +59,6 @@ public class AccountController {
     public ResponseEntity<Object> createAccount( Authentication authentication) {
 
         Client client= clientService.getClientByEmail(authentication.getName());
-        if (client==null){
-            return new ResponseEntity<>("user not found ", HttpStatus.FORBIDDEN);
-        }
 
         // Verificar si el cliente ya tiene 3
         if (client.getAccounts().size() >= 3) {

@@ -21,23 +21,32 @@ public class ClientServiceImplement implements ClientService {
     private ClientRepository clientRepository;
 
 
-    @Autowired
+    @Override
     public Client getClientByEmail (String email) {
         return clientRepository.findByEmail(email);
     }
 
-    @Autowired
-    public  void saveClient(Client client){
+    @Override
+    public void saveClient(Client client){
+
         clientRepository.save(client);
     }
 
-    @Autowired
+    @Override
     public List<ClientDTO> getClientsDTO(){
         return clientRepository.findAll().stream().map(ClientDTO::new).collect(toList());
     }
-     @Autowired
+    @Override
      public Client getClientById( Long id){
          return clientRepository.findById(id).orElse(null);
      }
+
+    @Override
+    public Client getClientCurrent(Authentication authentication){
+        return clientRepository.findByEmail(authentication.getName());
+    }
+
+
+
 
 }

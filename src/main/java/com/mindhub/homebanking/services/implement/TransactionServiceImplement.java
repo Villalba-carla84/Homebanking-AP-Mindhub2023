@@ -13,7 +13,7 @@ public class TransactionServiceImplement implements TransactionService {
     private TransactionRepository transactionRepository;
 
 
-    @Autowired
+    @Override
     public void saveTransaction( Transaction transaction){
         transactionRepository.save(transaction);
     }

@@ -38,7 +38,7 @@ public class ClientController {
 
     @RequestMapping(value = "/clients/current", method = RequestMethod.GET)
     public ClientDTO getClientCurrent(Authentication authentication){
-        return new ClientDTO(clientService.getClientByEmail(authentication.getName()));
+        return new ClientDTO(clientService.getClientCurrent(authentication));
     }
 
     @RequestMapping("/clients")

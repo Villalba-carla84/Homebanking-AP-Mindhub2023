@@ -15,21 +15,22 @@ public class AccountServiceImplement implements AccountService {
     @Autowired
     private AccountRepository accountRepository;
 
-    @Autowired
+    @Override
     public List<AccountDTO> getListAccountsDTO (){
         return accountRepository.findAll().stream().map(AccountDTO::new).collect(toList());
     }
 
-    @Autowired
+    @Override
     public AccountDTO getAccountById( Long id){
-        return accountRepository.findById(id).map(account -> new AccountDTO(account)).orElse(null);
+        return accountRepository.findById(id).map(AccountDTO::new).orElse(null);
 
     }
-    @Autowired
+    @Override
     public void saveAccount(Account account) {
+
         accountRepository.save(account);
     }
-    @Autowired
+    @Override
     public Account findAccount(String number){
         return accountRepository.findByNumber(number);
 
