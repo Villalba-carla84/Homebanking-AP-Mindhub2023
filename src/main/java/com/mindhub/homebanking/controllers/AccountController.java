@@ -1,7 +1,6 @@
 package com.mindhub.homebanking.controllers;
 import com.mindhub.homebanking.dtos.AccountDTO;
 import com.mindhub.homebanking.models.Account;
-import com.mindhub.homebanking.models.AccountUtil;
 import com.mindhub.homebanking.models.Client;
 import com.mindhub.homebanking.services.AccountService;
 import com.mindhub.homebanking.services.ClientService;
@@ -9,13 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import java.time.LocalDate;
 import java.util.List;
 
+import static com.mindhub.homebanking.utils.AccountUtils.generateAccountNumber;
 import static java.util.stream.Collectors.toList;
 
 @RestController
@@ -28,17 +26,14 @@ public class AccountController {
     @Autowired
     private ClientService clientService;
 
-    @Autowired
-    private AccountUtil accountUtil;
 
-
-    @RequestMapping("/accounts")
+    @GetMapping("/accounts")
     public List<AccountDTO> getAccounts () {
         return accountService.getListAccountsDTO();
 
     }
 
-    @RequestMapping("/accounts/{id}")
+    @GetMapping("/accounts/{id}")
     public AccountDTO getAccount(@PathVariable Long id){
 
       return accountService.getAccountById(id);
@@ -46,7 +41,7 @@ public class AccountController {
 
 
 
-    @RequestMapping("/clients/current/accounts")
+    @GetMapping("/clients/current/accounts")
     public List<AccountDTO> getCurrentAccounts(Authentication authentication){
         Client client = clientService.getClientByEmail(authentication.getName());
 
@@ -54,7 +49,7 @@ public class AccountController {
     }
 
 
-    @RequestMapping(path = "/clients/current/accounts", method = RequestMethod.POST)
+    @PostMapping("/clients/current/accounts")
 
     public ResponseEntity<Object> createAccount( Authentication authentication) {
 
@@ -65,7 +60,7 @@ public class AccountController {
             return new ResponseEntity<>("Maximum account limit reached", HttpStatus.FORBIDDEN);
         }
         // Generar un número de cuenta aleatorio
-        String accountNumber = accountUtil.generateAccountNumber();
+        String accountNumber = generateAccountNumber();
         // Crear la cuenta
         Account account = new Account(accountNumber, LocalDate.now() , 0);
 

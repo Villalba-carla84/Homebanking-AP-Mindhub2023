@@ -13,10 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -37,7 +34,7 @@ public class LoanController {
     @Autowired
     private TransactionService transactionService;
 
-@RequestMapping(path= "/loans",method = RequestMethod.GET)
+@GetMapping("/loans")
 public List<LoanDTO> getLoanApplicationDTO() {
     return loanService.getListLoanDTO();
                           //servicio GET de “/api/loans” debes crear un LoanDTO que puedas usar para retornar los préstamos disponibles
@@ -45,7 +42,7 @@ public List<LoanDTO> getLoanApplicationDTO() {
 
 
     @Transactional
-    @RequestMapping(path ="/loans",method= RequestMethod.POST)
+    @PostMapping("/loans")
     public ResponseEntity<Object> applyforloan(@RequestBody LoanApplicationDTO loanApplicationDTO, Authentication authentication) {
         //Debe recibir un objeto de solicitud de crédito con los datos del préstamo
 

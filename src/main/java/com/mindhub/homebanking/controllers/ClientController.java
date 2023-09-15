@@ -1,10 +1,7 @@
 package com.mindhub.homebanking.controllers;
 import com.mindhub.homebanking.dtos.ClientDTO;
 import com.mindhub.homebanking.models.Account;
-import com.mindhub.homebanking.models.AccountUtil;
 import com.mindhub.homebanking.models.Client;
-import com.mindhub.homebanking.repositories.AccountRepository;
-import com.mindhub.homebanking.repositories.ClientRepository;
 
 import com.mindhub.homebanking.services.AccountService;
 import com.mindhub.homebanking.services.ClientService;
@@ -18,7 +15,7 @@ import org.springframework.security.core.Authentication;
 import java.time.LocalDate;
 import java.util.List;
 
-import static java.util.stream.Collectors.toList;
+import static com.mindhub.homebanking.utils.AccountUtils.generateAccountNumber;
 
 
 @RestController
@@ -33,28 +30,25 @@ public class ClientController {
     @Autowired
     private AccountService accountService;
 
-    @Autowired
-    private AccountUtil accountUtil;
-
-    @RequestMapping(value = "/clients/current", method = RequestMethod.GET)
+    @GetMapping("/clients/current")
     public ClientDTO getClientCurrent(Authentication authentication){
         return new ClientDTO(clientService.getClientCurrent(authentication));
     }
 
-    @RequestMapping("/clients")
+    @GetMapping("/clients")
     public List<ClientDTO> getClients() {
 
         return clientService.getClientsDTO();
     }
 
-    @RequestMapping("/clients/{id}")
+    @GetMapping("/clients/{id}")
     public ClientDTO getClient(@PathVariable Long id){
 
         return new ClientDTO(clientService.getClientById(id));
 
 
     }
-    @RequestMapping( value = "/clients", method = RequestMethod.POST)
+    @PostMapping("/clients")
     public ResponseEntity<Object> register(
 
             @RequestParam String firstName,
@@ -72,7 +66,7 @@ public class ClientController {
         Client newClient = new Client(firstName, lastName, email, passwordEncoder.encode(password));
 
 // Crear una cuenta y asociarla al cliente
-        String accountNumber = accountUtil.generateAccountNumber();
+        String accountNumber =generateAccountNumber();
         Account account = new Account(accountNumber, LocalDate.now(), 0);
         newClient.addAccount(account);
         account.setClient(newClient);

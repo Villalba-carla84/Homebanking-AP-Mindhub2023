@@ -18,7 +18,7 @@ public class CardServiceImplement implements CardService {
 
     @Override
     public Set<CardDTO> getCards(){
-        return cardRepository.findAll().stream().map(CardDTO::new).collect(Collectors.toSet());
+         return cardRepository.findAll().stream().map(CardDTO::new).collect(Collectors.toSet());
     }
     @Override
    public void saveCards (Card card){

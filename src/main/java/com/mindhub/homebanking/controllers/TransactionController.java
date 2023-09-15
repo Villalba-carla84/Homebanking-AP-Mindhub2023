@@ -36,7 +36,7 @@ public class TransactionController {
    private ClientService clientService;
 
     @Transactional
-    @RequestMapping(path="/transactions", method = RequestMethod.POST)
+    @PostMapping("/transactions")
     public ResponseEntity<Object>createTransaction(
             @RequestParam double amount,
             @RequestParam String description,

@@ -26,6 +26,9 @@ import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.mindhub.homebanking.utils.CardUtils.getCVV;
+import static com.mindhub.homebanking.utils.CardUtils.getCardNumber;
+
 @RestController
 @RequestMapping("/api")
 public class CardController {
@@ -41,7 +44,7 @@ public class CardController {
         return cardService.getCards();
     }
 
-    @RequestMapping(path="/clients/current/cards", method = RequestMethod.POST)
+    @PostMapping("/clients/current/cards")
     public ResponseEntity<Object> createCards(@RequestParam CardColor cardColor,
                                               @RequestParam CardType cardType,
                                               Authentication authentication)
@@ -71,8 +74,8 @@ public class CardController {
                     card.setColor(cardColor);
                     card.setType(cardType);
                     card.setCardholder(client.getFirstName() + " " + client.getLastName());
-                    card.setNumber(generateCardNumber());
-                    card.setCvv(generateRandomCvv());
+                    card.setNumber(getCardNumber());
+                    card.setCvv(getCVV());
                     card.setFromDate(LocalDate.now());
                     card.setThruDate(LocalDate.now().plusYears(5));
 
@@ -85,30 +88,9 @@ public class CardController {
             } else {
                 throw new UsernameNotFoundException("Unknown user: " + authentication.getName());
             }
+
+
         }
-
-    // Métodos para generar números de tarjeta y CVV
-    private String generateCardNumber() {
-        Random random = new Random();
-        StringBuilder cardNumber = new StringBuilder();
-
-        for (int i = 0; i < 4; i++) {
-            cardNumber.append(random.nextInt(10000));
-            if (i < 3) {
-                cardNumber.append("-");
-            }
-        }
-
-        return cardNumber.toString();
-    }
-
-    private int generateRandomCvv() {
-        Random random = new Random();
-        return random.nextInt(900) + 100;
-    }
-
-
-
 
 
 
